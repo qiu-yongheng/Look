@@ -1,8 +1,15 @@
 <resources>
     <string name="app_name">Look</string>
+    <string name="title_zhihu">知乎日报</string>
+    <string name="title_news">网易头条</string>
+    <string name="title_meizi">妹子</string>
+
 
     <string name="navigation_drawer_open">Open navigation drawer</string>
     <string name="navigation_drawer_close">Close navigation drawer</string>
 
-    <string name="action_settings">Settings</string>
+    <string name="action_about">关于</string>
+    <string name="action_setting">设置</string>
+    <string name="menu_theme">主题</string>
+
 </resources>

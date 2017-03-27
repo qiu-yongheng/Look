@@ -1,7 +1,14 @@
 package com.eternal.look.meizi;
 
+import android.os.Bundle;
+import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
+import android.util.Log;
+import android.view.LayoutInflater;
 import android.view.View;
+import android.view.ViewGroup;
+
+import com.eternal.look.R;
 
 /**
  * @author qiuyongheng
@@ -10,6 +17,14 @@ import android.view.View;
  */
 
 public class MeiziFragment extends Fragment implements MeiziContract.View{
+    @Nullable
+    @Override
+    public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
+        /**1. 初始化布局*/
+        View view = inflater.inflate(R.layout.fragment_list, container, false);
+        Log.d("==", "meiziFragemnt");
+        return view;
+    }
     @Override
     public void setPresenter(MeiziContract.Presenter presenter) {
 
