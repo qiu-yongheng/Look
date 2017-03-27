@@ -13,7 +13,7 @@ import com.eternal.look.R;
 /**
  * @author qiuyongheng
  * @time 2017/3/24  10:56
- * @desc ${TODD}
+ * @desc gaga
  */
 
 public class NewsFragment extends Fragment implements NewsContract.View{
