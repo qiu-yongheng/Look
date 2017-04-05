@@ -13,4 +13,6 @@ public interface BaseView<T> {
     void setPresenter(T presenter);
     //初始化界面控件
     void initViews(View view);
+    //初始化监听
+    void initListener();
 }

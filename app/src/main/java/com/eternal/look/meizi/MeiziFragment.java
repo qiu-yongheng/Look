@@ -36,6 +36,11 @@ public class MeiziFragment extends Fragment implements MeiziContract.View{
     }
 
     @Override
+    public void initListener() {
+
+    }
+
+    @Override
     public void showError() {
 
     }

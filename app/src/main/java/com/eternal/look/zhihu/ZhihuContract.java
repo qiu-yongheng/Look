@@ -2,6 +2,9 @@ package com.eternal.look.zhihu;
 
 import com.eternal.look.BasePresenter;
 import com.eternal.look.BaseView;
+import com.eternal.look.bean.ZhihuNews;
+
+import java.util.ArrayList;
 
 /**
  * @author qiuyongheng
@@ -18,7 +21,7 @@ public interface ZhihuContract {
         //停止显示正在加载
         void stopLoading();
         //成功获取到数据后, 在界面中显示
-        void showResults();
+        void showResults(ArrayList<ZhihuNews.Question> list);
         //显示用于加载指定日期的date picker dialog
         void showPickDialog();
     }

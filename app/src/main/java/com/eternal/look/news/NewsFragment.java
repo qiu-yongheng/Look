@@ -13,7 +13,7 @@ import com.eternal.look.R;
 /**
  * @author qiuyongheng
  * @time 2017/3/24  10:56
- * @desc gagaasdfasdfasdf
+ * @desc
  */
 
 public class NewsFragment extends Fragment implements NewsContract.View{
@@ -32,6 +32,11 @@ public class NewsFragment extends Fragment implements NewsContract.View{
 
     @Override
     public void initViews(View view) {
+
+    }
+
+    @Override
+    public void initListener() {
 
     }
 

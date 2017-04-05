@@ -23,6 +23,7 @@ import com.eternal.look.R;
 import com.eternal.look.meizi.MeiziFragment;
 import com.eternal.look.news.NewsFragment;
 import com.eternal.look.zhihu.ZhihuFragment;
+import com.eternal.look.zhihu.ZhihuPresenter;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
@@ -56,10 +57,14 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
         initView();
         /** 2. 初始化fragment, 添加到activity */
         initFragment(savedInstanceState);
-        /** 3. 实例化BookmarksPresenter*/
-
+        /** 3. 实例化Presenter*/
+        initPresenter();
         /** 4. 默认显示知乎内容*/
         switchFragment(zhihuFragment);
+    }
+
+    private void initPresenter() {
+        new ZhihuPresenter(this, zhihuFragment);
     }
 
     private void initFragment(Bundle savedInstanceState) {
