@@ -2,7 +2,7 @@ package com.eternal.look.zhihu;
 
 import com.eternal.look.BasePresenter;
 import com.eternal.look.BaseView;
-import com.eternal.look.bean.ZhihuNews;
+import com.eternal.look.bean.zhihu.ZhihuNews;
 
 import java.util.ArrayList;
 

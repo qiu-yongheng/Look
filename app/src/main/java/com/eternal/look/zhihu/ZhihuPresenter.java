@@ -4,7 +4,7 @@ import android.content.Context;
 import android.util.Log;
 
 import com.eternal.look.api.ZhihuApi;
-import com.eternal.look.bean.ZhihuNews;
+import com.eternal.look.bean.zhihu.ZhihuNews;
 import com.eternal.look.util.DateFormatterUtil;
 import com.eternal.look.util.NetworkUtil;
 

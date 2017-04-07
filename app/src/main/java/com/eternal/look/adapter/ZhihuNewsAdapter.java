@@ -11,7 +11,7 @@ import android.widget.TextView;
 import com.bumptech.glide.Glide;
 import com.bumptech.glide.load.engine.DiskCacheStrategy;
 import com.eternal.look.R;
-import com.eternal.look.bean.ZhihuNews;
+import com.eternal.look.bean.zhihu.ZhihuNews;
 import com.eternal.look.interfaze.OnRecyclerViewOnClickListener;
 
 import java.util.List;

@@ -13,7 +13,7 @@ import android.view.ViewGroup;
 
 import com.eternal.look.R;
 import com.eternal.look.adapter.ZhihuNewsAdapter;
-import com.eternal.look.bean.ZhihuNews;
+import com.eternal.look.bean.zhihu.ZhihuNews;
 import com.eternal.look.interfaze.OnRecyclerViewOnClickListener;
 
 import java.util.ArrayList;
@@ -68,6 +68,7 @@ public class ZhihuFragment extends Fragment implements ZhihuContract.View {
         recyclerView.setHasFixedSize(true);
         //设置recyclerView的样式
         recyclerView.setLayoutManager(new LinearLayoutManager(getContext()));
+        refreshLayout.setColorSchemeResources(R.color.colorPrimary);
     }
 
     @Override

@@ -22,6 +22,7 @@ import android.widget.Toast;
 import com.eternal.look.R;
 import com.eternal.look.meizi.MeiziFragment;
 import com.eternal.look.news.NewsFragment;
+import com.eternal.look.news.NewsPresenter;
 import com.eternal.look.zhihu.ZhihuFragment;
 import com.eternal.look.zhihu.ZhihuPresenter;
 
@@ -65,6 +66,7 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
 
     private void initPresenter() {
         new ZhihuPresenter(this, zhihuFragment);
+        new NewsPresenter(this, newsFragment);
     }
 
     private void initFragment(Bundle savedInstanceState) {
@@ -76,6 +78,22 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
             zhihuFragment = new ZhihuFragment();
             newsFragment = new NewsFragment();
             meiziFragment = new MeiziFragment();
+        }
+
+        if (!zhihuFragment.isAdded()) {
+            getSupportFragmentManager().beginTransaction()
+                    .add(R.id.layout_fragment, zhihuFragment, "ZhihuFragment")
+                    .commit();
+        }
+        if (!newsFragment.isAdded()) {
+            getSupportFragmentManager().beginTransaction()
+                    .add(R.id.layout_fragment, newsFragment, "NewsFragment")
+                    .commit();
+        }
+        if (!meiziFragment.isAdded()) {
+            getSupportFragmentManager().beginTransaction()
+                    .add(R.id.layout_fragment, meiziFragment, "MeiziFragment")
+                    .commit();
         }
     }
 
@@ -195,15 +213,26 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
      * 切换显示Fragemnt
      */
     private void switchFragment(Fragment fragment) {
-        getSupportFragmentManager()
-                .beginTransaction()
-                .replace(R.id.layout_fragment, fragment)
-                .commit();
         if (fragment.equals(zhihuFragment)) {
+            getSupportFragmentManager().beginTransaction()
+                    .show(fragment)
+                    .hide(newsFragment)
+                    .hide(meiziFragment)
+                    .commit();
             toolbar.setTitle(R.string.title_zhihu);
         } else if (fragment.equals(newsFragment)) {
+            getSupportFragmentManager().beginTransaction()
+                    .show(fragment)
+                    .hide(zhihuFragment)
+                    .hide(meiziFragment)
+                    .commit();
             toolbar.setTitle(R.string.title_news);
         } else if (fragment.equals(meiziFragment)) {
+            getSupportFragmentManager().beginTransaction()
+                    .show(fragment)
+                    .hide(newsFragment)
+                    .hide(zhihuFragment)
+                    .commit();
             toolbar.setTitle(R.string.title_meizi);
         }
     }

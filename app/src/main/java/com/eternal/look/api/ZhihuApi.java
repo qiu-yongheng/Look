@@ -1,7 +1,7 @@
 package com.eternal.look.api;
 
-import com.eternal.look.bean.ZhihuNews;
-import com.eternal.look.bean.ZhihuStory;
+import com.eternal.look.bean.zhihu.ZhihuNews;
+import com.eternal.look.bean.zhihu.ZhihuStory;
 
 import retrofit2.http.GET;
 import retrofit2.http.Path;
