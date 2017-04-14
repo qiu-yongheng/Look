@@ -5,4 +5,6 @@
     <color name="colorAccent">#FF4081</color>
     <color name="viewBackground">@android:color/white</color>
     <color name="red">#ff00</color>
+    <color name="meizibg">#faf1f1f1</color>
+    <color name="mid_grey">#40808080</color>
 </resources>

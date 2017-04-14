@@ -14,9 +14,9 @@ import rx.Observable;
 
 public interface NewsApi {
     // TODO: 16/8/17 string or int
-    @GET("http://c.m.163.com/nc/article/headline/T1348647909107/{id}-20.html")
+    @GET("nc/article/headline/T1348647909107/{id}-20.html")
     Observable<NewsList> getNews(@Path("id") int id );
 
-    @GET("http://c.m.163.com/nc/article/{id}/full.html")
+    @GET("nc/article/{id}/full.html")
     Observable<String> getNewsDetail(@Path("id") String id);
 }

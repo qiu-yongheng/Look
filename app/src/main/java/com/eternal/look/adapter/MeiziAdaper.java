@@ -9,21 +9,19 @@ import com.bumptech.glide.Glide;
 import com.bumptech.glide.load.engine.DiskCacheStrategy;
 import com.eternal.look.R;
 import com.eternal.look.adapter.viewholder.FooterViewHolder;
-import com.eternal.look.adapter.viewholder.NormalViewHolder;
-import com.eternal.look.bean.zhihu.ZhihuNews;
+import com.eternal.look.adapter.viewholder.MeiziViewHolder;
+import com.eternal.look.bean.meizi.MeiziData;
 import com.eternal.look.interfaze.OnRecyclerViewOnClickListener;
 
 import java.util.List;
 
 /**
  * @author qiuyongheng
- * @time 2017/4/5  11:18
+ * @time 2017/4/12  13:06
  * @desc ${TODD}
  */
 
-public class ZhihuNewsAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder>{
-    private final Context context;
-    private final List<ZhihuNews.Question> list;
+public class MeiziAdaper extends RecyclerView.Adapter<RecyclerView.ViewHolder> {
     private final LayoutInflater inflater;
     /**
      * item类型: 文字 + 图片
@@ -33,78 +31,67 @@ public class ZhihuNewsAdapter extends RecyclerView.Adapter<RecyclerView.ViewHold
      * item类型: footer，加载更多
      */
     private static final int TYPE_FOOTER = 1;
+    private final Context context;
+    private final List<MeiziData.ResultsBean> list;
     private OnRecyclerViewOnClickListener mListener;
 
-    public ZhihuNewsAdapter(Context context, List<ZhihuNews.Question> list) {
+    public MeiziAdaper(Context context, List<MeiziData.ResultsBean> list) {
         this.context = context;
         this.list = list;
-        this.inflater = LayoutInflater.from(context);
+        inflater = LayoutInflater.from(context);
     }
+
 
     @Override
     public RecyclerView.ViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
-        // 根据ViewType加载不同布局
         switch (viewType) {
             case TYPE_NORMAL:
-                return new NormalViewHolder(inflater.inflate(R.layout.home_list_item_layout, parent, false), mListener);
+                return new MeiziViewHolder(inflater.inflate(R.layout.meizi_item, parent, false), mListener);
             case TYPE_FOOTER:
                 return new FooterViewHolder(inflater.inflate(R.layout.list_footer, parent, false));
         }
         return null;
     }
 
-    /**
-     * 给holder中的view绑定数据
-     * @param holder
-     * @param position
-     */
     @Override
     public void onBindViewHolder(RecyclerView.ViewHolder holder, int position) {
-        // 对不同的ViewHolder做不同的处理
-        if (holder instanceof NormalViewHolder) {
-            ZhihuNews.Question item = list.get(position);
-            if (item.getImages().get(0) == null){
-                ((NormalViewHolder)holder).itemImg.setImageResource(R.drawable.placeholder);
+        if (holder instanceof MeiziViewHolder) {
+            MeiziData.ResultsBean resultsBean = list.get(position);
+            if (resultsBean.getUrl() == null) {
+                ((MeiziViewHolder) holder).itemImg.setImageResource(R.drawable.placeholder);
             } else {
                 //网络请求获取图片并设置
                 Glide.with(context)
-                        .load(item.getImages().get(0)) //图片地址
+                        .load(resultsBean.getUrl()) //图片地址
                         .asBitmap()
                         .placeholder(R.drawable.placeholder)
                         .diskCacheStrategy(DiskCacheStrategy.SOURCE)
                         .error(R.drawable.placeholder)
                         .centerCrop()
-                        .into(((NormalViewHolder)holder).itemImg);
+                        .into(((MeiziViewHolder) holder).itemImg);
             }
-            ((NormalViewHolder)holder).tvLatestNewsTitle.setText(item.getTitle());
         }
     }
-    /**
-     * 让外界传入监听器, 当item被点击时, 回调当前点击的item
-     * @param listener
-     */
-    public void setItemClickListener(OnRecyclerViewOnClickListener listener){
-        this.mListener = listener;
-    }
-    /**
-     * 获取item数量
-     * @return
-     */
+
     @Override
     public int getItemCount() {
         return list.size() + 1;
     }
 
-    /**
-     * 获取item类型
-     * @param position
-     * @return
-     */
     @Override
     public int getItemViewType(int position) {
         if (position == list.size()) {
             return TYPE_FOOTER;
         }
         return TYPE_NORMAL;
+    }
+
+    /**
+     * 让外界传入监听器, 当item被点击时, 回调当前点击的item
+     *
+     * @param listener
+     */
+    public void setItemClickListener(OnRecyclerViewOnClickListener listener) {
+        this.mListener = listener;
     }
 }

@@ -21,6 +21,7 @@ import android.widget.Toast;
 
 import com.eternal.look.R;
 import com.eternal.look.meizi.MeiziFragment;
+import com.eternal.look.meizi.MeiziPresenter;
 import com.eternal.look.news.NewsFragment;
 import com.eternal.look.news.NewsPresenter;
 import com.eternal.look.zhihu.ZhihuFragment;
@@ -67,6 +68,7 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
     private void initPresenter() {
         new ZhihuPresenter(this, zhihuFragment);
         new NewsPresenter(this, newsFragment);
+        new MeiziPresenter(this, meiziFragment);
     }
 
     private void initFragment(Bundle savedInstanceState) {

@@ -13,10 +13,14 @@ import android.view.View;
 import android.view.ViewGroup;
 
 import com.eternal.look.R;
+import com.eternal.look.adapter.NewsAdapter;
+import com.eternal.look.bean.news.NewsList;
+import com.eternal.look.interfaze.OnRecyclerViewOnClickListener;
+
+import java.util.List;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
-import butterknife.Unbinder;
 
 /**
  * @author qiuyongheng
@@ -29,8 +33,8 @@ public class NewsFragment extends Fragment implements NewsContract.View {
     RecyclerView recyclerView;
     @BindView(R.id.refreshLayout)
     SwipeRefreshLayout refreshLayout;
-    Unbinder unbinder;
     private NewsContract.Presenter presenter;
+    private NewsAdapter adapter;
 
     @Nullable
     @Override
@@ -38,7 +42,12 @@ public class NewsFragment extends Fragment implements NewsContract.View {
         /**1. 初始化布局*/
         View view = inflater.inflate(R.layout.fragment_list, container, false);
         Log.d("==", "newsFragemnt");
-        unbinder = ButterKnife.bind(this, view);
+        ButterKnife.bind(this, view);
+        initViews(view);
+        // 加载数据
+        presenter.start();
+        // 初始化监听
+        initListener();
         return view;
     }
 
@@ -58,7 +67,41 @@ public class NewsFragment extends Fragment implements NewsContract.View {
 
     @Override
     public void initListener() {
+        refreshLayout.setOnRefreshListener(new SwipeRefreshLayout.OnRefreshListener() {
+            @Override
+            public void onRefresh() {
+                presenter.refresh();
+            }
+        });
 
+        // 滑动到最后item加载更多
+        recyclerView.setOnScrollListener(new RecyclerView.OnScrollListener() {
+            // 记录是否往下滑
+            boolean isSlidingToLast = false;
+            @Override
+            public void onScrollStateChanged(RecyclerView recyclerView, int newState) {
+                super.onScrollStateChanged(recyclerView, newState);
+                LinearLayoutManager manager = (LinearLayoutManager) recyclerView.getLayoutManager();
+                // 当不滚动时
+                if (newState == RecyclerView.SCROLL_STATE_IDLE) {
+                    // 获取最后一个完全显示的item position
+                    int lastVisibleItem = manager.findLastCompletelyVisibleItemPosition();
+                    // 获取当前显示的item的数量
+                    int totalItemCount = manager.getItemCount();
+
+                    // 判断是否滚动到底部并且是向下滑动
+                    if (lastVisibleItem == (totalItemCount - 1) && isSlidingToLast) {
+                        presenter.loadMord();
+                    }
+                }
+            }
+
+            @Override
+            public void onScrolled(RecyclerView recyclerView, int dx, int dy) {
+                super.onScrolled(recyclerView, dx, dy);
+                isSlidingToLast = dy > 0;
+            }
+        });
     }
 
     @Override
@@ -94,8 +137,19 @@ public class NewsFragment extends Fragment implements NewsContract.View {
     }
 
     @Override
-    public void showResults() {
-
+    public void showResults(List<NewsList.NewsBean> list) {
+        if (adapter == null) {
+            adapter = new NewsAdapter(getContext(), list);
+            adapter.setItemClickListener(new OnRecyclerViewOnClickListener() {
+                @Override
+                public void OnItemClick(View v, int position) {
+                    presenter.showDetail(position);
+                }
+            });
+            recyclerView.setAdapter(adapter);
+        } else {
+            adapter.notifyDataSetChanged();
+        }
     }
 
     @Override
@@ -106,6 +160,5 @@ public class NewsFragment extends Fragment implements NewsContract.View {
     @Override
     public void onDestroyView() {
         super.onDestroyView();
-        unbinder.unbind();
     }
 }

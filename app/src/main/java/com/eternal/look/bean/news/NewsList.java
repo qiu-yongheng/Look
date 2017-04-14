@@ -8,22 +8,22 @@ import static android.R.attr.priority;
 /**
  * @author qiuyongheng
  * @time 2017/4/7  13:49
- * @desc ${TODD}
+ * @desc 网易新闻数据
  */
 
 public class NewsList {
 
-    private List<T1348647909107Bean> T1348647909107;
+    private List<NewsBean> T1348647909107;
 
-    public List<T1348647909107Bean> getT1348647909107() {
+    public List<NewsBean> getT1348647909107() {
         return T1348647909107;
     }
 
-    public void setT1348647909107(List<T1348647909107Bean> T1348647909107) {
+    public void setT1348647909107(List<NewsBean> T1348647909107) {
         this.T1348647909107 = T1348647909107;
     }
 
-    public static class T1348647909107Bean {
+    public static class NewsBean {
 
         private String digest;
         private String docid;

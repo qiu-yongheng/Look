@@ -10,20 +10,18 @@ import com.bumptech.glide.load.engine.DiskCacheStrategy;
 import com.eternal.look.R;
 import com.eternal.look.adapter.viewholder.FooterViewHolder;
 import com.eternal.look.adapter.viewholder.NormalViewHolder;
-import com.eternal.look.bean.zhihu.ZhihuNews;
+import com.eternal.look.bean.news.NewsList;
 import com.eternal.look.interfaze.OnRecyclerViewOnClickListener;
 
 import java.util.List;
 
 /**
  * @author qiuyongheng
- * @time 2017/4/5  11:18
+ * @time 2017/4/11  10:40
  * @desc ${TODD}
  */
 
-public class ZhihuNewsAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder>{
-    private final Context context;
-    private final List<ZhihuNews.Question> list;
+public class NewsAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> {
     private final LayoutInflater inflater;
     /**
      * item类型: 文字 + 图片
@@ -33,9 +31,11 @@ public class ZhihuNewsAdapter extends RecyclerView.Adapter<RecyclerView.ViewHold
      * item类型: footer，加载更多
      */
     private static final int TYPE_FOOTER = 1;
+    private final Context context;
+    private final List<NewsList.NewsBean> list;
     private OnRecyclerViewOnClickListener mListener;
 
-    public ZhihuNewsAdapter(Context context, List<ZhihuNews.Question> list) {
+    public NewsAdapter(Context context, List<NewsList.NewsBean> list) {
         this.context = context;
         this.list = list;
         this.inflater = LayoutInflater.from(context);
@@ -43,7 +43,6 @@ public class ZhihuNewsAdapter extends RecyclerView.Adapter<RecyclerView.ViewHold
 
     @Override
     public RecyclerView.ViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
-        // 根据ViewType加载不同布局
         switch (viewType) {
             case TYPE_NORMAL:
                 return new NormalViewHolder(inflater.inflate(R.layout.home_list_item_layout, parent, false), mListener);
@@ -53,50 +52,45 @@ public class ZhihuNewsAdapter extends RecyclerView.Adapter<RecyclerView.ViewHold
         return null;
     }
 
-    /**
-     * 给holder中的view绑定数据
-     * @param holder
-     * @param position
-     */
     @Override
     public void onBindViewHolder(RecyclerView.ViewHolder holder, int position) {
         // 对不同的ViewHolder做不同的处理
         if (holder instanceof NormalViewHolder) {
-            ZhihuNews.Question item = list.get(position);
-            if (item.getImages().get(0) == null){
-                ((NormalViewHolder)holder).itemImg.setImageResource(R.drawable.placeholder);
+            NewsList.NewsBean newsBean = list.get(position);
+            if (newsBean.getImgsrc() == null) {
+                ((NormalViewHolder) holder).itemImg.setImageResource(R.drawable.placeholder);
             } else {
                 //网络请求获取图片并设置
                 Glide.with(context)
-                        .load(item.getImages().get(0)) //图片地址
+                        .load(newsBean.getImgsrc()) //图片地址
                         .asBitmap()
                         .placeholder(R.drawable.placeholder)
                         .diskCacheStrategy(DiskCacheStrategy.SOURCE)
                         .error(R.drawable.placeholder)
                         .centerCrop()
-                        .into(((NormalViewHolder)holder).itemImg);
+                        .into(((NormalViewHolder) holder).itemImg);
             }
-            ((NormalViewHolder)holder).tvLatestNewsTitle.setText(item.getTitle());
+            ((NormalViewHolder) holder).tvLatestNewsTitle.setText(newsBean.getTitle());
         }
     }
-    /**
-     * 让外界传入监听器, 当item被点击时, 回调当前点击的item
-     * @param listener
-     */
-    public void setItemClickListener(OnRecyclerViewOnClickListener listener){
-        this.mListener = listener;
-    }
-    /**
-     * 获取item数量
-     * @return
-     */
+
     @Override
     public int getItemCount() {
         return list.size() + 1;
     }
 
     /**
+     * 让外界传入监听器, 当item被点击时, 回调当前点击的item
+     *
+     * @param listener
+     */
+    public void setItemClickListener(OnRecyclerViewOnClickListener listener) {
+        this.mListener = listener;
+    }
+
+    /**
      * 获取item类型
+     *
      * @param position
      * @return
      */

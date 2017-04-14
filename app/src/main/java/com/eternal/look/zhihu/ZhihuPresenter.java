@@ -1,10 +1,13 @@
 package com.eternal.look.zhihu;
 
 import android.content.Context;
+import android.content.Intent;
 import android.util.Log;
 
 import com.eternal.look.api.ZhihuApi;
+import com.eternal.look.bean.BeanType;
 import com.eternal.look.bean.zhihu.ZhihuNews;
+import com.eternal.look.detail.DetailActivity;
 import com.eternal.look.util.DateFormatterUtil;
 import com.eternal.look.util.NetworkUtil;
 
@@ -62,7 +65,7 @@ public class ZhihuPresenter implements ZhihuContract.Presenter {
         // 判断是否有网
         if (NetworkUtil.networkConnected(context)) {
             new Retrofit.Builder()
-                    .baseUrl("http://news-at.zhihu.com")
+                    .baseUrl("http://news-at.zhihu.com/")
                     .addConverterFactory(GsonConverterFactory.create())
                     .addCallAdapterFactory(RxJavaCallAdapterFactory.create())
                     .build()
@@ -118,6 +121,9 @@ public class ZhihuPresenter implements ZhihuContract.Presenter {
 
     @Override
     public void showDetail(int position) {
-
+        context.startActivity(new Intent(context, DetailActivity.class)
+                .putExtra("type", BeanType.TYPE_ZHIHU) //设置详细页的类型
+                .putExtra("id", list.get(position).getId()) //获取数据的id
+                .putExtra("title", list.get(position).getTitle())); //获取数据的标题
     }
 }

@@ -1,5 +1,7 @@
 package com.eternal.look.util;
 
+import android.util.Log;
+
 import java.text.SimpleDateFormat;
 import java.util.Date;
 
@@ -17,9 +19,11 @@ public class DateFormatterUtil {
      */
     public static String ZhihuDailyDateFormat(long date) {
         String sDate;
+        // 多添加一天时间
         Date d = new Date(date + 24*60*60*1000);
         SimpleDateFormat format = new SimpleDateFormat("yyyyMMdd");
         sDate = format.format(d);
+        Log.d("==", "知乎请求数据: " + sDate);
         return sDate;
     }
 
