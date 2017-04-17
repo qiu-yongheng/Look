@@ -24,14 +24,21 @@ public class NewsList {
     }
 
     public static class NewsBean {
-
+        // 摘要
         private String digest;
+        // 文章id
         private String docid;
+        // 标题
         private String title;
+        // 来源
         private String source;
+
         private String tname;
+        // 图片
         private String imgsrc;
+        // 发布时间
         private String ptime;
+
         private String TAG;
 
 

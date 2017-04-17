@@ -3,6 +3,7 @@ package com.eternal.look.detail;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.design.widget.AppBarLayout;
+import android.support.design.widget.BottomSheetDialog;
 import android.support.design.widget.CollapsingToolbarLayout;
 import android.support.design.widget.CoordinatorLayout;
 import android.support.design.widget.Snackbar;
@@ -13,6 +14,7 @@ import android.support.v7.widget.Toolbar;
 import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuInflater;
+import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
 import android.webkit.WebSettings;
@@ -63,10 +65,40 @@ public class DetailFragment extends Fragment implements DetailContract.View {
         return view;
     }
 
+    /**
+     * 创建menu菜单
+     * @param menu
+     * @param inflater
+     */
     @Override
     public void onCreateOptionsMenu(Menu menu, MenuInflater inflater) {
         inflater.inflate(R.menu.menu_more, menu);
         super.onCreateOptionsMenu(menu, inflater);
+    }
+
+    /**
+     * menu菜单的点击事件
+     * @param item
+     * @return
+     */
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+
+        switch (item.getItemId()) {
+            case android.R.id.home:
+                // activity有返回栈, 直接返回
+                getActivity().onBackPressed();
+                break;
+            case R.id.action_more:
+                // 材料设计, 底部弹出dialog
+                BottomSheetDialog dialog = new BottomSheetDialog(getActivity());
+                View view = getActivity().getLayoutInflater().inflate(R.layout.reading_actions_sheet, null);
+                // TODO 列表中item的点击事件
+                dialog.setContentView(view);
+                dialog.show();
+                break;
+        }
+        return super.onOptionsItemSelected(item);
     }
 
     @Override
@@ -76,8 +108,12 @@ public class DetailFragment extends Fragment implements DetailContract.View {
 
     @Override
     public void initViews(View view) {
+        // 设置显示menu菜单
         setHasOptionsMenu(true);
-
+        // 替换显示actionbar, 显示返回键
+        DetailActivity activity = (DetailActivity) getActivity();
+        activity.setSupportActionBar(toolbar);
+        activity.getSupportActionBar().setDisplayHomeAsUpEnabled(true);
 
         // 显示滚动条
         webView.setScrollbarFadingEnabled(true);
@@ -110,6 +146,12 @@ public class DetailFragment extends Fragment implements DetailContract.View {
                 scrollView.smoothScrollTo(0, 0);
             }
         });
+        refreshLayout.setOnRefreshListener(new SwipeRefreshLayout.OnRefreshListener() {
+            @Override
+            public void onRefresh() {
+                presenter.requestData();
+            }
+        });
     }
 
     @Override
@@ -140,7 +182,7 @@ public class DetailFragment extends Fragment implements DetailContract.View {
                     public void onClick(View view) {
                         presenter.requestData();
                     }
-                });
+                }).show();
     }
 
     /**

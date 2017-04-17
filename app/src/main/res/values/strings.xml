@@ -15,4 +15,12 @@
     <string name="retry">重试</string>
     <string name="loading_more">加载更多</string>
 
+    <!--bottom sheet list-->
+    <string name="action_add_to_bookmarks">添加到收藏</string>
+    <string name="action_delete_from_bookmarks">取消收藏</string>
+    <string name="action_copy_link">复制链接</string>
+    <string name="action_open_in_browser">在浏览器中打开</string>
+    <string name="action_copy_text">复制内容文本</string>
+    <string name="action_share_as_text">作为文本分享</string>
+
 </resources>

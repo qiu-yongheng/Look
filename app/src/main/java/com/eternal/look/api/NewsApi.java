@@ -2,6 +2,7 @@ package com.eternal.look.api;
 
 import com.eternal.look.bean.news.NewsList;
 
+import okhttp3.ResponseBody;
 import retrofit2.http.GET;
 import retrofit2.http.Path;
 import rx.Observable;
@@ -18,5 +19,5 @@ public interface NewsApi {
     Observable<NewsList> getNews(@Path("id") int id );
 
     @GET("nc/article/{id}/full.html")
-    Observable<String> getNewsDetail(@Path("id") String id);
+    Observable<ResponseBody> getNewsDetail(@Path("id") String id);
 }

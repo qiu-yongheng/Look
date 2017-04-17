@@ -42,6 +42,9 @@ public class DetailActivity extends AppCompatActivity {
         presenter.setType((BeanType) intent.getSerializableExtra("type"));
         presenter.setId(intent.getIntExtra("id", 0));
         presenter.setTitle(intent.getStringExtra("title"));
+
+        presenter.setDocId(intent.getStringExtra("docid"));
+        presenter.setImageSrc(intent.getStringExtra("imag"));
     }
 
     private void initPresenter() {

@@ -1,9 +1,12 @@
 package com.eternal.look.news;
 
 import android.content.Context;
+import android.content.Intent;
 
 import com.eternal.look.api.NewsApi;
+import com.eternal.look.bean.BeanType;
 import com.eternal.look.bean.news.NewsList;
+import com.eternal.look.detail.DetailActivity;
 import com.eternal.look.util.NetworkUtil;
 
 import java.util.ArrayList;
@@ -96,6 +99,10 @@ public class NewsPresenter implements NewsContract.Presenter{
 
     @Override
     public void showDetail(int position) {
-
+        context.startActivity(new Intent(context, DetailActivity.class)
+                .putExtra("imag", list.get(position).getImgsrc()) // 头部图片
+                .putExtra("type", BeanType.TYPE_NEWS) //设置详细页的类型
+                .putExtra("docid", list.get(position).getDocid()) //获取数据的id
+                .putExtra("title", list.get(position).getTitle())); //获取数据的标题
     }
 }

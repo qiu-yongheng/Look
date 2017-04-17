@@ -3,11 +3,20 @@ package com.eternal.look.detail;
 import android.content.Context;
 import android.content.res.Configuration;
 
+import com.eternal.look.api.NewsApi;
 import com.eternal.look.api.ZhihuApi;
 import com.eternal.look.bean.BeanType;
+import com.eternal.look.bean.news.NewsDetail;
 import com.eternal.look.bean.zhihu.ZhihuStory;
 import com.eternal.look.util.NetworkUtil;
+import com.google.gson.Gson;
 
+import org.json.JSONException;
+import org.json.JSONObject;
+
+import java.io.IOException;
+
+import okhttp3.ResponseBody;
 import retrofit2.Retrofit;
 import retrofit2.adapter.rxjava.RxJavaCallAdapterFactory;
 import retrofit2.converter.gson.GsonConverterFactory;
@@ -27,6 +36,17 @@ public class DetailPresenter implements DetailContract.Presenter {
     private String title;
     private final Context context;
     private final DetailContract.View view;
+    private String docId;
+    private Gson gson = new Gson();
+    private String imageSrc;
+
+    public void setImageSrc(String imageSrc) {
+        this.imageSrc = imageSrc;
+    }
+
+    public void setDocId(String docId) {
+        this.docId = docId;
+    }
 
     public void setType(BeanType type) {
         this.type = type;
@@ -53,16 +73,16 @@ public class DetailPresenter implements DetailContract.Presenter {
 
     @Override
     public void requestData() {
-        if (id == 0 || type == null) {
+        if (type == null) {
             view.showError();
             return;
         }
         view.showLoading();
         view.setTitle(title);
 
-        switch (type) {
-            case TYPE_ZHIHU:
-                if (NetworkUtil.networkConnected(context)) {
+        if (NetworkUtil.networkConnected(context)) {
+            switch (type) {
+                case TYPE_ZHIHU:
                     new Retrofit.Builder()
                             .baseUrl("http://news-at.zhihu.com/")
                             .addConverterFactory(GsonConverterFactory.create())
@@ -96,22 +116,62 @@ public class DetailPresenter implements DetailContract.Presenter {
                                     }
                                 }
                             });
-                } else {
-                    view.stopLoading();
-                    view.showError();
-                }
-                break;
-            case TYPE_NEWS:
+                    break;
+                case TYPE_NEWS:
+                    new Retrofit.Builder()
+                            .baseUrl("http://c.m.163.com/")
+                            .addCallAdapterFactory(RxJavaCallAdapterFactory.create())
+                            .addConverterFactory(GsonConverterFactory.create())
+                            .build()
+                            .create(NewsApi.class)
+                            .getNewsDetail(docId)
+                            .subscribeOn(Schedulers.io())
+                            .observeOn(AndroidSchedulers.mainThread())
+                            .subscribe(new Observer<ResponseBody>() {
+                                @Override
+                                public void onCompleted() {
+                                    view.stopLoading();
+                                }
 
-                break;
-            case TYPE_MEIZI:
+                                @Override
+                                public void onError(Throwable e) {
+                                    view.stopLoading();
+                                    view.showError();
+                                }
 
-                break;
+                                @Override
+                                public void onNext(ResponseBody responseBody) {
+                                    try {
+                                        JSONObject jsonObject = new JSONObject(responseBody.string());
+                                        JSONObject object = jsonObject.getJSONObject(docId);
+                                        NewsDetail newsDetail = gson.fromJson(object.toString(), NewsDetail.class);
+
+                                        view.showCover(imageSrc);
+                                        if (newsDetail.getBody() == null) {
+                                            view.showResultWithoutBody(newsDetail.getShareLink());
+                                        } else {
+                                            view.showResult(newsDetail.getBody());
+                                        }
+                                    } catch (JSONException e) {
+                                        e.printStackTrace();
+                                    } catch (IOException e) {
+                                        e.printStackTrace();
+                                    }
+                                }
+                            });
+                    break;
+                case TYPE_MEIZI:
+                    break;
+            }
+        } else {
+            view.stopLoading();
+            view.showError();
         }
     }
 
     /**
      * 转换知乎的HTML
+     *
      * @param preResult
      * @return
      */
@@ -133,7 +193,7 @@ public class DetailPresenter implements DetailContract.Presenter {
         // load content judging by different theme
         String theme = "<body className=\"\" onload=\"onLoaded()\">";
         if ((context.getResources().getConfiguration().uiMode & Configuration.UI_MODE_NIGHT_MASK)
-                == Configuration.UI_MODE_NIGHT_YES){
+                == Configuration.UI_MODE_NIGHT_YES) {
             theme = "<body className=\"\" onload=\"onLoaded()\" class=\"night\">";
         }
 
