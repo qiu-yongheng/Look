@@ -4,6 +4,7 @@ import android.content.Context;
 import android.content.Intent;
 import android.util.Log;
 
+import com.eternal.look.api.Api;
 import com.eternal.look.api.ZhihuApi;
 import com.eternal.look.bean.BeanType;
 import com.eternal.look.bean.zhihu.ZhihuNews;
@@ -65,7 +66,7 @@ public class ZhihuPresenter implements ZhihuContract.Presenter {
         // 判断是否有网
         if (NetworkUtil.networkConnected(context)) {
             new Retrofit.Builder()
-                    .baseUrl("http://news-at.zhihu.com/")
+                    .baseUrl(Api.ZHIHU_URL)
                     .addConverterFactory(GsonConverterFactory.create())
                     .addCallAdapterFactory(RxJavaCallAdapterFactory.create())
                     .build()

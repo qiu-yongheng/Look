@@ -1,8 +1,9 @@
-package com.eternal.look.meizi;
+package com.eternal.look.gank.meizi;
 
 import android.content.Context;
 
-import com.eternal.look.api.MeiziApi;
+import com.eternal.look.api.Api;
+import com.eternal.look.api.gank.GankApi;
 import com.eternal.look.bean.meizi.MeiziData;
 import com.eternal.look.util.NetworkUtil;
 
@@ -51,11 +52,11 @@ public class MeiziPresenter implements MeiziContract.Presenter{
 
         if (NetworkUtil.networkConnected(context)) {
             new Retrofit.Builder()
-                    .baseUrl("http://gank.io/api/data/")
+                    .baseUrl(Api.GANK_URL)
                     .addCallAdapterFactory(RxJavaCallAdapterFactory.create())
                     .addConverterFactory(GsonConverterFactory.create())
                     .build()
-                    .create(MeiziApi.class)
+                    .create(GankApi.class)
                     .getMeiPic(page)
                     .subscribeOn(Schedulers.io())
                     .observeOn(AndroidSchedulers.mainThread())

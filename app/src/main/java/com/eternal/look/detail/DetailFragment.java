@@ -215,7 +215,6 @@ public class DetailFragment extends Fragment implements DetailContract.View {
         setCollapsingToolbarLayoutTitle(title);
     }
 
-
     @Override
     public void onDestroyView() {
         super.onDestroyView();

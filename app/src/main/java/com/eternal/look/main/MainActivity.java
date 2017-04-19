@@ -20,8 +20,7 @@ import android.widget.FrameLayout;
 import android.widget.Toast;
 
 import com.eternal.look.R;
-import com.eternal.look.meizi.MeiziFragment;
-import com.eternal.look.meizi.MeiziPresenter;
+import com.eternal.look.gank.GankFragment;
 import com.eternal.look.news.NewsFragment;
 import com.eternal.look.news.NewsPresenter;
 import com.eternal.look.zhihu.ZhihuFragment;
@@ -46,9 +45,9 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
     DrawerLayout drawerLayout;
     private ZhihuFragment zhihuFragment;
     private NewsFragment newsFragment;
-    private MeiziFragment meiziFragment;
     private long exitTime = 0;
     private SwitchCompat mThemeSwitch;
+    private GankFragment gankFragment;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -68,18 +67,17 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
     private void initPresenter() {
         new ZhihuPresenter(this, zhihuFragment);
         new NewsPresenter(this, newsFragment);
-        new MeiziPresenter(this, meiziFragment);
     }
 
     private void initFragment(Bundle savedInstanceState) {
         if (savedInstanceState != null) {
-            getSupportFragmentManager().getFragment(savedInstanceState, "");
-            getSupportFragmentManager().getFragment(savedInstanceState, "");
-            getSupportFragmentManager().getFragment(savedInstanceState, "");
+            getSupportFragmentManager().getFragment(savedInstanceState, "ZhihuFragment");
+            getSupportFragmentManager().getFragment(savedInstanceState, "NewsFragment");
+            getSupportFragmentManager().getFragment(savedInstanceState, "GankFragment");
         } else {
             zhihuFragment = new ZhihuFragment();
             newsFragment = new NewsFragment();
-            meiziFragment = new MeiziFragment();
+            gankFragment = new GankFragment();
         }
 
         if (!zhihuFragment.isAdded()) {
@@ -92,9 +90,9 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
                     .add(R.id.layout_fragment, newsFragment, "NewsFragment")
                     .commit();
         }
-        if (!meiziFragment.isAdded()) {
+        if (!gankFragment.isAdded()) {
             getSupportFragmentManager().beginTransaction()
-                    .add(R.id.layout_fragment, meiziFragment, "MeiziFragment")
+                    .add(R.id.layout_fragment, gankFragment, "GankFragment")
                     .commit();
         }
     }
@@ -198,8 +196,8 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
             case R.id.nav_news:
                 switchFragment(newsFragment);
                 break;
-            case R.id.nav_meizi:
-                switchFragment(meiziFragment);
+            case R.id.nav_gank:
+                switchFragment(gankFragment);
                 break;
             case R.id.nav_theme:
                 break;
@@ -219,26 +217,25 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
             getSupportFragmentManager().beginTransaction()
                     .show(fragment)
                     .hide(newsFragment)
-                    .hide(meiziFragment)
+                    .hide(gankFragment)
                     .commit();
             toolbar.setTitle(R.string.title_zhihu);
         } else if (fragment.equals(newsFragment)) {
             getSupportFragmentManager().beginTransaction()
                     .show(fragment)
                     .hide(zhihuFragment)
-                    .hide(meiziFragment)
+                    .hide(gankFragment)
                     .commit();
             toolbar.setTitle(R.string.title_news);
-        } else if (fragment.equals(meiziFragment)) {
+        } else if (fragment.equals(gankFragment)) {
             getSupportFragmentManager().beginTransaction()
                     .show(fragment)
                     .hide(newsFragment)
                     .hide(zhihuFragment)
                     .commit();
-            toolbar.setTitle(R.string.title_meizi);
+            toolbar.setTitle(R.string.title_gank);
         }
     }
-
 
     /**
      * 保存状态
@@ -254,8 +251,8 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
         if (newsFragment.isAdded()) {
             getSupportFragmentManager().putFragment(outState, "NewsFragment", newsFragment);
         }
-        if (meiziFragment.isAdded()) {
-            getSupportFragmentManager().putFragment(outState, "MeiziFragment", meiziFragment);
+        if (gankFragment.isAdded()) {
+            getSupportFragmentManager().putFragment(outState, "GankFragment", gankFragment);
         }
     }
 

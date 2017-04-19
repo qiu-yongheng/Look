@@ -1,4 +1,4 @@
-package com.eternal.look.meizi;
+package com.eternal.look.gank.meizi;
 
 import com.eternal.look.BasePresenter;
 import com.eternal.look.BaseView;
